@@ -7,12 +7,12 @@ import os
 llm = ChatOpenAI(
     api_key=os.getenv('GROQ_API_KEY'),
     model="llama3-8b-8192",
-    model_kwargs={"api_base": "https://api.groq.com/openai/v1"}
+    model_kwargs={"api_base": os.getenv('API_BASE_URL')}
 )
 
 def process_pdf(question, filename):
     # Use CrewAI’s PDFSearchTool for PDF handling
-    pdf_tool = PDFSearchTool(pdf=f"backend/{filename}", config=dict(
+    pdf_tool = PDFSearchTool(pdf=f"backend/uploads/{filename}", config=dict(
         llm=dict(
             provider="groq",
             config=dict(
@@ -26,6 +26,7 @@ def process_pdf(question, filename):
             ),
         ),
     ))
-    
+
+    # Retrieve the response based on the provided question
     response = pdf_tool.retrieve_response(question)
     return response
