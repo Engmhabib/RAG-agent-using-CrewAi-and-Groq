@@ -1,4 +1,3 @@
-
 from crewai_tools import PDFSearchTool
 from langchain_openai import ChatOpenAI
 import os
@@ -11,8 +10,11 @@ llm = ChatOpenAI(
 )
 
 def process_pdf(question, filename):
+    # Construct the path to the PDF file in the uploads directory
+    pdf_path = f"uploads/{filename}"
+
     # Use CrewAI’s PDFSearchTool for PDF handling
-    pdf_tool = PDFSearchTool(pdf=f"uploads/{filename}", config=dict(
+    pdf_tool = PDFSearchTool(pdf=pdf_path, config=dict(
         llm=dict(
             provider="groq",
             config=dict(
