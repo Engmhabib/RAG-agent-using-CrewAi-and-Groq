@@ -12,7 +12,7 @@ llm = ChatOpenAI(
 
 def process_pdf(question, filename):
     # Use CrewAI’s PDFSearchTool for PDF handling
-    pdf_tool = PDFSearchTool(pdf=f"backend/uploads/{filename}", config=dict(
+    pdf_tool = PDFSearchTool(pdf=f"uploads/{filename}", config=dict(
         llm=dict(
             provider="groq",
             config=dict(
