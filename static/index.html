@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple RAG App</title>
+</head>
+<body>
+    <h1>Simple RAG App</h1>
+    <form id="upload-form" enctype="multipart/form-data">
+        <label for="pdf-file">Upload PDF:</label>
+        <input type="file" id="pdf-file" name="file" accept=".pdf" required>
+        <button type="submit">Upload</button>
+    </form>
+
+    <form id="query-form" style="margin-top: 20px;">
+        <label for="question">Ask a question:</label>
+        <input type="text" id="question" name="question" required>
+        <button type="submit">Submit</button>
+    </form>
+
+    <div id="response" style="margin-top: 20px;"></div>
+
+    <script>
+        document.getElementById("upload-form").addEventListener("submit", async function(event) {
+            event.preventDefault();
+            const fileInput = document.getElementById("pdf-file");
+            const formData = new FormData();
+            formData.append("file", fileInput.files[0]);
+            
+            const response = await fetch("/upload_pdf", {
+                method: "POST",
+                body: formData
+            });
+            
+            if (response.ok) {
+                const result = await response.json();
+                alert(result.message);
+            } else {
+                alert("Failed to upload PDF. Please try again.");
+            }
+        });
+
+        document.getElementById("query-form").addEventListener("submit", async function(event) {
+            event.preventDefault();
+            const question = document.getElementById("question").value;
+            const filename = document.getElementById("pdf-file").files[0].name;
+            
+            const response = await fetch("/query_pdf", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ question: question, filename: filename })
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                document.getElementById("response").innerText = "Answer: " + result.answer;
+            } else {
+                document.getElementById("response").innerText = "Error: Unable to retrieve answer.";
+            }
+        });
+    </script>
+</body>
+</html>
