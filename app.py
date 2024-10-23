@@ -5,7 +5,7 @@ from fastapi.staticfiles import StaticFiles
 from dotenv import load_dotenv
 import os
 import logging
-from utils.pdf_tools import process_pdf
+from utils.pdf_tools import process_pdf  # Import the properly integrated utility function
 
 # Load environment variables
 load_dotenv()
@@ -37,7 +37,8 @@ async def upload_pdf(file: UploadFile = File(...)):
 @app.post("/query_pdf")
 async def query_pdf(question: str, filename: str):
     try:
-        response = process_pdf(question, filename)  # The process_pdf function is now configured for CrewAI and Groq
+        # Process the PDF and question using CrewAI and Groq's language model
+        response = process_pdf(question, filename)  # Function defined in utils/pdf_tools.py
         logger.info(f"Response generated: {response}")
         return JSONResponse(content={"answer": response})
     except Exception as e:
