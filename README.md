@@ -38,4 +38,4 @@ Clone the repository from GitHub to your local machine:
 
 ```bash
 git clone https://github.com/Engmhabib/RAG-agent-using-CrewAi-and-Groq.git
-cd RAG-agent-using-CrewAi-and-Groq/backend
+cd RAG-agent-using-CrewAi-and-Groq
